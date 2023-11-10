@@ -1,0 +1,10 @@
+int main() { 
+    //char abcc;
+    //abc=24+32;
+    if(abc >10){ 
+        int a;
+    } 
+    else{ 
+        int b;
+    } 
+}
