@@ -1,22 +1,13 @@
-IF "if"
-ELSE "else"
-WHILE "while"
-INT "int"
-CHAR "char"
-SEMICOLON ";"
-ABRE_PAR "("
-FECHA_PAR ")"
-ABRE_CHAVE "{"
-FECHA_CHAVE "}"
-ABRE_COL "["
-FECHA_COL "]"
-ADD "+"
-SUB "-"
-MUL "*"
-DIV "/"
-MOD "%"
-INC "++"
-DEC "--"
+%option yylineno
+%x COMMENT
+
+%{
+    #include <stdio.h>
+    #include "yacc.tab.h"
+    #include <stdlib.h>
+    //int yylval;    
+%}
+
 ID [a-zA-Z][a-zA-Z0-9_]*
 NUMERO [0-9]+
 ESPACO [ ]
@@ -24,21 +15,11 @@ QUEBRA_DE_LINHA [\n]
 TAB [\t]
 CARRIAGE_RETURN [ \t\r]
 OPERADOR_RELACIONAL "=="|"<"|">"|"<="|">="|"!="
-OPERADOR_LOGICO "&&"|"||"|"!"
-ATRIB "="
-SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
-
-%{
-    #include <stdio.h>
-    #include "yacc.tab.h"
-    int yylval;    
-%}
-
-%option yylineno
-%x COMMENT
-
+OPERADOR_LOGICO "&&"|"||"
+SIMBOLO "\""|"'"|":"|"."|"'"|"&"
 
 %%
+
 
 "/*"                   {BEGIN(COMMENT);}
 <COMMENT>"*/"          {BEGIN(INITIAL); }
@@ -46,11 +27,14 @@ SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 <COMMENT><<EOF>>       {fprintf(yyout, "\t(ERRO - COMENTARIO SEM FIM)\n");return 0;}
 "//".*                 { /* Ignorar comentários de linha */ }
 
-"if"                   {return IF; }
-"else"                 {return ELSE;}
-"while"                {return WHILE;}
+"!"                    {return NOT;}
+","                    {return VIRGULA;}
+"void"                 {return VOID;}
 "int"                  {return INT;}
 "char"                 {return CHAR;}
+"if"                   {return IF;}
+"else"                 {return ELSE;}
+"while"                {return WHILE;}
 ";"                    {return SEMICOLON;}
 "("                    {return ABRE_PAR;}
 ")"                    {return FECHA_PAR;}
@@ -58,7 +42,9 @@ SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 "}"                    {return FECHA_CHAVE;}
 "["                    {return ABRE_COL;}
 "]"                    {return FECHA_COL;}
-"="                    {return ATRIB; }
+"="                    {return ATRIB;}
+"+="                   {return MAIS_ATRIB;}
+"-="                   {return MENOS_ATRIB;}
 "+"                    {return ADD;}
 "-"                    {return SUB;}
 "*"                    {return MUL;}

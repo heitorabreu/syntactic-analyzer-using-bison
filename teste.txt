@@ -1,10 +1,18 @@
 int main() { 
     //char abcc;
     //abc=24+32;
-    if(abc >10){ 
+    if(!(abc > 10) && b == 4 + (6%2 != 4)){ 
         int a;
+        a = (a+b+2)*2/3;
     } 
     else{ 
-        int b;
+        int b,c,d,e,f;
+        char fgr[][1];
+        int a = 2, b = 4, c = a, d[][];
     } 
+    while(b==9 || c *4 >= 2)
+    {
+        b++;
+        b+=90;
+    }
 }
