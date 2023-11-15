@@ -30,7 +30,8 @@ p2: /* Vazio */
     ;
 
 function_declaration: INT ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função INT %s\n", $2); }
-                    | CHAR ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função INT %s\n", $2); }
+                    | CHAR ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função CHAR %s\n", $2); }
+                    | VOID ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função VOID %s\n", $2); }
                    ;
 
 tipo: INT
