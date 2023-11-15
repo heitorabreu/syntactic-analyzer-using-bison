@@ -8,6 +8,7 @@ extern FILE* yyin;
 
 %token IF
 %token ELSE
+%token ELIF
 %token WHILE
 %token INT CHAR 
 %token SEMICOLON
@@ -15,13 +16,14 @@ extern FILE* yyin;
 %token FECHA_PAR
 %token ABRE_CHAVE
 %token FECHA_CHAVE
-%token ABRE_COL
-%token FECHA_COL
 %token ID
 %token NUMERO
 %token ATRIB
 %token MAIS_ATRIB
 %token MENOS_ATRIB
+%token MUL_ATRIB
+%token DIV_ATRIB
+%token MOD_ATRIB
 %token ADD
 %token SUB
 %token MUL
@@ -31,99 +33,88 @@ extern FILE* yyin;
 %token DEC
 %token OPERADOR_RELACIONAL
 %token OPERADOR_LOGICO
-/* %token CERQUILHA
-%token DEFINE */
-%token VIRGULA
+%token COMMA
 %token VOID
 %token NOT
+%token RTRN
 
 %%
 
 S: program
 ;
 
-program:
-       | function_declaration
+program: function_declaration
        | variable_declaration
        | assignment
-       | commands
+       | if_statement
+       | while_loop
+       | /* CADEIA VAZIA */
 ;
 
 p2: 
     | variable_declaration p2
     | assignment p2
-    | commands p2
-;
-
-function_declaration: tipo_retorno ID param bloco
-;
-
-param: ABRE_PAR param1
-;
-
-param1: FECHA_PAR
-      | param2
-;
-
-param2: tipo_var param3
-;
-
-param3: ID param4
-;
-
-param4: ABRE_COL NUMERO FECHA_COL param4
-      | ABRE_COL FECHA_CHAVE param4
-      | VIRGULA param2
-      | FECHA_COL
+    | if_statement p2
+    | while_loop p2
 ;
 
 bloco: ABRE_CHAVE p2 FECHA_CHAVE
+     | ABRE_CHAVE FECHA_CHAVE
+     | ABRE_CHAVE p2 RTRN expression SEMICOLON FECHA_CHAVE
+     |ABRE_CHAVE RTRN expression SEMICOLON FECHA_CHAVE
+     | ABRE_CHAVE p2 RTRN SEMICOLON FECHA_CHAVE 
+     | ABRE_CHAVE RTRN SEMICOLON FECHA_CHAVE
 ;
 
-tipo_retorno: INT
+function_declaration: INT ID ABRE_PAR var_list FECHA_PAR bloco
+                    | CHAR ID ABRE_PAR var_list FECHA_PAR bloco
+                    | VOID ID ABRE_PAR var_list FECHA_PAR bloco
+;
+
+tipo: INT
     | CHAR
-    | VOID                 
 ;
 
-tipo_var: INT
-        | CHAR
+var_list: tipo ID var_list2
+        | /* CADEIA VAZIA */
 ;
 
-variable_declaration: tipo_var vb2
+var_list2:  COMMA tipo ID var_list2
+        |   /* CADEIA VAZIA */
 ;
 
-vb2: ID vb3
-
-vb3: ABRE_COL NUMERO FECHA_COL vb3
-   | ABRE_COL FECHA_COL vb3
-   | ATRIB expression vb4
-   | vb4
+variable_declaration: tipo id_list SEMICOLON
 ;
 
-vb4: VIRGULA vb2
-   | SEMICOLON
+id_list:  ID id_list2
+        | ID ATRIB expression id_list2
+        | /* CADEIA VAZIA */
+;
+
+id_list2: COMMA ID id_list2
+        | COMMA ID ATRIB expression id_list2
+        | /* CADEIA VAZIA */
 ;
 
 assignment: ID ATRIB expression SEMICOLON
+          | ID MAIS_ATRIB expression SEMICOLON
+          | ID MENOS_ATRIB expression SEMICOLON
+          | ID MUL_ATRIB expression SEMICOLON
+          | ID DIV_ATRIB expression SEMICOLON
+          | ID MOD_ATRIB expression SEMICOLON 
           | ID INC SEMICOLON
           | ID DEC SEMICOLON
-          | ID MAIS_ATRIB expression SEMICOLON
-          | ID MENOS_ATRIB expression SEMICOLON  
 ;
 
-commands: command_list com1
+if_statement: IF ABRE_PAR expression FECHA_PAR bloco if2
+            | IF ABRE_PAR expression FECHA_PAR bloco if2 ELSE bloco
 ;
 
-com1: commands
-    |
+if2: ELIF ABRE_PAR expression FECHA_PAR bloco if2
+   | /* CADEIA VAZIA */
 ;
 
-command_list: IF ABRE_PAR expression FECHA_PAR bloco cmdl2
-            | WHILE ABRE_PAR expression FECHA_PAR bloco
-;
-
-cmdl2: ELSE bloco
-     |
+while_loop: WHILE ABRE_PAR expression FECHA_PAR bloco
 ;
 
 expression: ID
@@ -136,17 +127,7 @@ expression: ID
           | expression MOD expression
           | expression OPERADOR_RELACIONAL expression
           | expression OPERADOR_LOGICO expression
-          | ABRE_PAR expression FECHA_PAR expression3
-;
-
-expression3: OPERADOR_LOGICO expression
-           | OPERADOR_RELACIONAL expression
-           | ADD expression
-           | SUB expression
-           | MUL expression
-           | DIV expression
-           | MOD expression
-           |
+          | ABRE_PAR expression FECHA_PAR
 ;
 
 %%

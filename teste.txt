@@ -5,11 +5,13 @@ int main() {
         int a;
         a = (a+b+2)*2/3;
     } 
-    else{ 
+    else if(hahaha != hihihi){ 
         int b,c,d,e,f;
-        char fgr[][1];
-        int a = 2, b = 4, c = a, d[][];
-    } 
+        int a = 2, b = 4, c = a;
+    }
+    else{
+            inr a;
+    }
     while(b==9 || c *4 >= 2)
     {
         b++;

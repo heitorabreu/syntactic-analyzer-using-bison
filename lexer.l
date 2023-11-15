@@ -5,7 +5,6 @@
     #include <stdio.h>
     #include "yacc.tab.h"
     #include <stdlib.h>
-    //int yylval;    
 %}
 
 ID [a-zA-Z][a-zA-Z0-9_]*
@@ -27,24 +26,27 @@ SIMBOLO "\""|"'"|":"|"."|"'"|"&"
 <COMMENT><<EOF>>       {fprintf(yyout, "\t(ERRO - COMENTARIO SEM FIM)\n");return 0;}
 "//".*                 { /* Ignorar comentários de linha */ }
 
+"return"               {return RTRN;}
 "!"                    {return NOT;}
-","                    {return VIRGULA;}
+","                    {return COMMA;}
 "void"                 {return VOID;}
 "int"                  {return INT;}
 "char"                 {return CHAR;}
 "if"                   {return IF;}
 "else"                 {return ELSE;}
+"else if"              {return ELIF;}
 "while"                {return WHILE;}
 ";"                    {return SEMICOLON;}
 "("                    {return ABRE_PAR;}
 ")"                    {return FECHA_PAR;}
 "{"                    {return ABRE_CHAVE;}
 "}"                    {return FECHA_CHAVE;}
-"["                    {return ABRE_COL;}
-"]"                    {return FECHA_COL;}
 "="                    {return ATRIB;}
 "+="                   {return MAIS_ATRIB;}
 "-="                   {return MENOS_ATRIB;}
+"*="                   {return MUL_ATRIB;}
+"/="                   {return DIV_ATRIB;}
+"%="                   {return MOD_ATRIB;}
 "+"                    {return ADD;}
 "-"                    {return SUB;}
 "*"                    {return MUL;}
