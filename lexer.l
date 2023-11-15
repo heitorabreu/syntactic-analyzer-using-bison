@@ -1,23 +1,3 @@
-IF "if"
-ELSE "else"
-WHILE "while"
-INT "int"
-CHAR "char"
-SEMICOLON ";"
-ABRE_PAR "("
-FECHA_PAR ")"
-ABRE_CHAVE "{"
-FECHA_CHAVE "}"
-ABRE_COL "["
-FECHA_COL "]"
-ADD "+"
-SUB "-"
-MUL "*"
-DIV "/"
-MOD "%"
-INC "++"
-DEC "--"
-ID [a-zA-Z][a-zA-Z0-9_]*
 NUMERO [0-9]+
 ESPACO [ ]
 QUEBRA_DE_LINHA [\n]
@@ -25,8 +5,6 @@ TAB [\t]
 CARRIAGE_RETURN [ \t\r]
 OPERADOR_RELACIONAL "=="|"<"|">"|"<="|">="|"!="
 OPERADOR_LOGICO "&&"|"||"|"!"
-ATRIB "="
-SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 
 %{
     #include <stdio.h>
@@ -36,7 +14,6 @@ SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 
 %option yylineno
 %x COMMENT
-
 
 %%
 
@@ -49,9 +26,11 @@ SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 "if"                   {return IF; }
 "else"                 {return ELSE;}
 "while"                {return WHILE;}
-"int"                  {return INT;}
-"char"                 {return CHAR;}
+"int"                  {return INT; }
+"char"                 {return CHAR; }
+"void"                 {return VOID; }
 ";"                    {return SEMICOLON;}
+","                    {return COMMA; }
 "("                    {return ABRE_PAR;}
 ")"                    {return FECHA_PAR;}
 "{"                    {return ABRE_CHAVE;}
@@ -66,6 +45,8 @@ SIMBOLO "\""|"'"|":"|","|"."|"'"|"&"
 "%"                    {return MOD;}
 "++"                   {return INC;}
 "--"                   {return DEC;}
+"+="                   {return MAIS_ATRIB;}
+"-="                   {return MENOS_ATRIB;}
 [a-zA-Z][a-zA-Z0-9_]*  {return ID;}
 [0-9]+                 {return NUMERO;}
 {OPERADOR_RELACIONAL}  {return OPERADOR_RELACIONAL;}
