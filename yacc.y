@@ -6,23 +6,20 @@ extern FILE* yyin;
 %}
 
 %token IF ELSE WHILE
-%token INT CHAR 
-%token SEMICOLON
+%token INT CHAR VOID
+%token SEMICOLON COMMA
 %token ABRE_PAR FECHA_PAR ABRE_CHAVE FECHA_CHAVE ABRE_COL FECHA_COL
 %token ID
 %token NUMERO
 %token ATRIB
-%token ADD SUB MUL DIV MOD INC DEC
+%token ADD SUB MUL DIV MOD INC DEC MAIS_ATRIB MENOS_ATRIB
 %token OPERADOR_RELACIONAL OPERADOR_LOGICO
 
 %%
 
 program: /* Vazio */
-       | function_declaration
-       | variable_declaration
-       | assignment
-       | if_statement
-       | while_loop
+       | variable_declaration program
+       | function_declaration program
        ;
 
 p2: /* Vazio */
@@ -32,18 +29,50 @@ p2: /* Vazio */
     | while_loop p2
     ;
 
-function_declaration: INT ID ABRE_PAR FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE
-                   { printf("Função INT %s\n", $2); }
+function_declaration: INT ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função INT %s\n", $2); }
+                    | CHAR ID ABRE_PAR var_list FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE { printf("Função INT %s\n", $2); }
                    ;
 
-variable_declaration: INT ID SEMICOLON
+tipo: INT
+    | CHAR
+    ;
+
+var_list: tipo ID var_list2
+        | tipo ID ABRE_COL FECHA_COL var_list2
+        | tipo ID ABRE_COL NUMERO FECHA_COL var_list2
+        | /* Vazio */
+        ;
+
+var_list2:  COMMA tipo ID var_list2
+        |   COMMA tipo ID ABRE_COL FECHA_COL var_list2
+        |   COMMA tipo ID ABRE_COL NUMERO FECHA_COL var_list2
+        |   /* Vazio */
+        ;
+
+
+variable_declaration: INT id_list SEMICOLON
                    { printf("Declaração de variável INT %s\n", $2); }
-                   | CHAR ID SEMICOLON
+                   | CHAR id_list SEMICOLON
                    { printf("Declaração de variável CHAR %s\n", $2); }
                    ;
 
-assignment: ID ATRIB expression SEMICOLON
-          { printf("Atribuição: %s = %d\n", $1, $3); }
+id_list:  ID id_list2
+        | ID ABRE_COL NUMERO FECHA_COL id_list2 
+        | ID ATRIB expression id_list2
+        | /* Vazio */
+        ;
+
+id_list2: COMMA ID id_list2
+        | COMMA ID ABRE_COL NUMERO FECHA_COL id_list2
+        | COMMA ID ATRIB expression id_list2
+        | /* Vazio */
+        ;
+
+assignment: ID ATRIB expression SEMICOLON { printf("Atribuição: %s = %d\n", $1, $3); }
+          | ID INC SEMICOLON
+          | ID DEC SEMICOLON
+          | ID MAIS_ATRIB expression SEMICOLON
+          | ID MENOS_ATRIB expression SEMICOLON
           ;
 
 if_statement: IF ABRE_PAR expression FECHA_PAR ABRE_CHAVE p2 FECHA_CHAVE
@@ -63,7 +92,10 @@ expression: ID
           | expression MUL expression
           | expression DIV expression
           | expression MOD expression
+          | expression OPERADOR_LOGICO expression
           | expression OPERADOR_RELACIONAL expression
+          | ABRE_PAR expression FECHA_PAR
+          | /* Vazio */
           ;
 
 %%
