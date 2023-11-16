@@ -1,6 +1,12 @@
+int b = 1 + 2;
+// int c = a * b;
+#define a 12
+#define a a + b
+
 int main()
 {
-    char abcc;
+    char z;
+    char abc = 4;
     abc = 24 + 32;
     if (!(abc > 10) && b == 4 + (6 % 2 != 4))
     {
@@ -21,4 +27,6 @@ int main()
         b++;
         b += 90;
     }
+
+    return c + b + a;
 }

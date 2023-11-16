@@ -1,21 +1,49 @@
-int main()
+#define a 2
+int a = 2;
+int b = a + b;
+int b = 2;
+char a = 0;
+
+// Função para calcular o fatorial de um número
+int calcularFatorial(int n)
 {
-    int num1 = 15, num2 = 7;
-    int resultadoModulo = num1 % num2;
-
-    int numero = 7;
-    int quadrado = numero * numero;
-
-    if (quadrado > 25 && resultadoModulo != 0)
+    if (n <= 1)
     {
-        quadrado += resultadoModulo;
+        return 1;
     }
     else
     {
-        if (quadrado <= 25 || resultadoModulo == 0)
-        {
-            quadrado -= resultadoModulo;
-        }
+        return n * calcularFatorial(n - 1);
+    }
+}
+
+// Função para verificar se um número é primo
+int verificarPrimo(int num)
+{
+    if (num < 2)
+    {
+        return 0; // Não é primo
+    }
+
+    return 1; // É primo
+}
+
+int main()
+{
+    int a = 5, b = 10;
+    int soma = a + b;
+
+    int numero = 7;
+
+    if (numero > 5)
+    {
+        // Código se verdadeiro
+        soma += numero;
+    }
+    else
+    {
+        // Código se falso
+        soma -= numero;
     }
 
     int contador = 1;
@@ -23,16 +51,27 @@ int main()
 
     while (contador <= 5)
     {
+        // Cálculo do fatorial
         fatorial *= contador;
         contador++;
     }
 
+    int resultadoFatorial = calcularFatorial(fatorial);
     int numeroVerificado = 13;
-    int resultadoPrimo = (numeroVerificado > 1);
-
-    // Estruturas de controle de fluxo
-
-    // Loop do-while
+    int resultadoPrimo = verificarPrimo(numeroVerificado);
 
     return 0;
 }
+
+int calcularQuadrado(int numero)
+{
+    return numero * numero;
+}
+
+int main()
+{
+    int resultado = calcularQuadrado(5 + calcularFatorial(2, 2 + 2, id, 9));
+    return 0;
+}
+
+int a = 5;

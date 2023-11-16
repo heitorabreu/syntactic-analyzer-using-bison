@@ -37,39 +37,46 @@ extern FILE* yyin;
 %token VOID
 %token NOT
 %token RTRN
+%token CERQUILHA
+%token DEFINE
 
 %%
 
 S: program
 ;
 
-program: variable_declaration
-       | function_declaration
+program: CERQUILHA DEFINE ID expression program
+       | variable_declaration program
+       | function_declaration program
        | /* CADEIA VAZIA */
 ;
 
-p2: 
-    | variable_declaration p2
+p2: variable_declaration p2
     | assignment p2
+    | function_call p2
     | if_statement p2
     | while_loop p2
+    | /* CADEIA VAZIA */
 ;
 
 bloco: ABRE_CHAVE p2 FECHA_CHAVE
-     | ABRE_CHAVE FECHA_CHAVE
      | ABRE_CHAVE p2 RTRN expression SEMICOLON FECHA_CHAVE
-     |ABRE_CHAVE RTRN expression SEMICOLON FECHA_CHAVE
      | ABRE_CHAVE p2 RTRN SEMICOLON FECHA_CHAVE 
-     | ABRE_CHAVE RTRN SEMICOLON FECHA_CHAVE
 ;
 
-function_declaration: INT ID ABRE_PAR var_list FECHA_PAR bloco
-                    | CHAR ID ABRE_PAR var_list FECHA_PAR bloco
-                    | VOID ID ABRE_PAR var_list FECHA_PAR bloco
+function_declaration: tipo ID ABRE_PAR var_list FECHA_PAR bloco
+;
+
+function_call: ID ABRE_PAR expression exp2 FECHA_PAR
+;
+
+exp2: COMMA expression exp2
+    | /* CADEIA VAZIA */
 ;
 
 tipo: INT
     | CHAR
+    | VOID
 ;
 
 var_list: tipo ID var_list2
@@ -77,14 +84,14 @@ var_list: tipo ID var_list2
 ;
 
 var_list2:  COMMA tipo ID var_list2
-        |   /* CADEIA VAZIA */
+         |  /* CADEIA VAZIA */
 ;
 
 variable_declaration: tipo id_list SEMICOLON
 ;
 
-id_list:  ID id_list2
-        | ID ATRIB expression id_list2
+id_list: ID id_list2
+       | ID ATRIB expression id_list2
 ;
 
 id_list2: COMMA ID id_list2
@@ -116,6 +123,7 @@ while_loop: WHILE ABRE_PAR expression FECHA_PAR bloco
 expression: ID
           | NUMERO
           | NOT expression 
+          | function_call
           | expression ADD expression
           | expression SUB expression
           | expression MUL expression

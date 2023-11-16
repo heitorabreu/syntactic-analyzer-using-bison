@@ -25,6 +25,8 @@ OPERADOR_LOGICO "&&"|"||"
 <COMMENT><<EOF>>       {fprintf(yyout, "\t(ERRO - COMENTARIO SEM FIM)\n");return 0;}
 "//".*                 { /* Ignorar comentários de linha */ }
 
+"define"               {return DEFINE;}
+"#"                    {return CERQUILHA;}
 "return"               {return RTRN;}
 "!"                    {return NOT;}
 ","                    {return COMMA;}
