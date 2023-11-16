@@ -53,7 +53,7 @@ program: CERQUILHA DEFINE ID expression program
 
 p2: variable_declaration p2
     | assignment p2
-    | function_call p2
+    | function_call SEMICOLON p2
     | if_statement p2
     | while_loop p2
     | /* CADEIA VAZIA */
@@ -68,6 +68,7 @@ function_declaration: tipo ID ABRE_PAR var_list FECHA_PAR bloco
 ;
 
 function_call: ID ABRE_PAR expression exp2 FECHA_PAR
+             | ID ABRE_PAR FECHA_PAR
 ;
 
 exp2: COMMA expression exp2

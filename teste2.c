@@ -71,6 +71,9 @@ int calcularQuadrado(int numero)
 int main()
 {
     int resultado = calcularQuadrado(5 + calcularFatorial(2, 2 + 2, id, 9));
+
+    funcaoSemParam();
+
     return 0;
 }
 
