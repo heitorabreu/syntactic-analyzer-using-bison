@@ -88,7 +88,6 @@ variable_declaration: tipo id_list SEMICOLON
 
 id_list:  ID id_list2
         | ID ATRIB expression id_list2
-        | /* CADEIA VAZIA */
 ;
 
 id_list2: COMMA ID id_list2
