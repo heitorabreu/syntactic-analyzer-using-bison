@@ -43,12 +43,13 @@ extern FILE* yyin;
 S: program
 ;
 
-program: variable_declaration
-       | function_declaration
-       | /* CADEIA VAZIA */
-;
+program: /* Vazio */
+       | variable_declaration program
+       | function_declaration program
+       ;
 
-p2: 
+
+p2: /* Vazio */
     | variable_declaration p2
     | assignment p2
     | if_statement p2
@@ -56,11 +57,8 @@ p2:
 ;
 
 bloco: ABRE_CHAVE p2 FECHA_CHAVE
-     | ABRE_CHAVE FECHA_CHAVE
      | ABRE_CHAVE p2 RTRN expression SEMICOLON FECHA_CHAVE
-     |ABRE_CHAVE RTRN expression SEMICOLON FECHA_CHAVE
      | ABRE_CHAVE p2 RTRN SEMICOLON FECHA_CHAVE 
-     | ABRE_CHAVE RTRN SEMICOLON FECHA_CHAVE
 ;
 
 function_declaration: INT ID ABRE_PAR var_list FECHA_PAR bloco
@@ -121,8 +119,8 @@ expression: ID
           | expression MUL expression
           | expression DIV expression
           | expression MOD expression
-          | expression OPERADOR_LOGICO expression
           | expression OPERADOR_RELACIONAL expression
+          | expression OPERADOR_LOGICO expression
           | ABRE_PAR expression FECHA_PAR
 ;
 
