@@ -1,21 +1,23 @@
+%option yylineno
+%x COMMENT
+
+%{
+    #include <stdio.h>
+    #include "yacc.tab.h"
+    #include <stdlib.h>
+%}
+
+ID [a-zA-Z][a-zA-Z0-9_]*
 NUMERO [0-9]+
 ESPACO [ ]
 QUEBRA_DE_LINHA [\n]
 TAB [\t]
 CARRIAGE_RETURN [ \t\r]
 OPERADOR_RELACIONAL "=="|"<"|">"|"<="|">="|"!="
-OPERADOR_LOGICO "&&"|"||"|"!"
-
-%{
-    #include <stdio.h>
-    #include "yacc.tab.h"
-    int yylval;    
-%}
-
-%option yylineno
-%x COMMENT
+OPERADOR_LOGICO "&&"|"||"
 
 %%
+
 
 "/*"                   {BEGIN(COMMENT);}
 <COMMENT>"*/"          {BEGIN(INITIAL); }
@@ -23,21 +25,28 @@ OPERADOR_LOGICO "&&"|"||"|"!"
 <COMMENT><<EOF>>       {fprintf(yyout, "\t(ERRO - COMENTARIO SEM FIM)\n");return 0;}
 "//".*                 { /* Ignorar comentários de linha */ }
 
-"if"                   {return IF; }
+"return"               {return RTRN;}
+"!"                    {return NOT;}
+","                    {return COMMA;}
+"void"                 {return VOID;}
+"int"                  {return INT;}
+"char"                 {return CHAR;}
+"if"                   {return IF;}
 "else"                 {return ELSE;}
+"else if"              {return ELIF;}
 "while"                {return WHILE;}
-"int"                  {return INT; }
-"char"                 {return CHAR; }
-"void"                 {return VOID; }
 ";"                    {return SEMICOLON;}
 ","                    {return COMMA; }
 "("                    {return ABRE_PAR;}
 ")"                    {return FECHA_PAR;}
 "{"                    {return ABRE_CHAVE;}
 "}"                    {return FECHA_CHAVE;}
-"["                    {return ABRE_COL;}
-"]"                    {return FECHA_COL;}
-"="                    {return ATRIB; }
+"="                    {return ATRIB;}
+"+="                   {return MAIS_ATRIB;}
+"-="                   {return MENOS_ATRIB;}
+"*="                   {return MUL_ATRIB;}
+"/="                   {return DIV_ATRIB;}
+"%="                   {return MOD_ATRIB;}
 "+"                    {return ADD;}
 "-"                    {return SUB;}
 "*"                    {return MUL;}
