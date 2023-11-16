@@ -43,11 +43,8 @@ extern FILE* yyin;
 S: program
 ;
 
-program: function_declaration
-       | variable_declaration
-       | assignment
-       | if_statement
-       | while_loop
+program: variable_declaration
+       | function_declaration
        | /* CADEIA VAZIA */
 ;
 
@@ -124,8 +121,8 @@ expression: ID
           | expression MUL expression
           | expression DIV expression
           | expression MOD expression
-          | expression OPERADOR_RELACIONAL expression
           | expression OPERADOR_LOGICO expression
+          | expression OPERADOR_RELACIONAL expression
           | ABRE_PAR expression FECHA_PAR
 ;
 
